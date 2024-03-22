@@ -2,7 +2,7 @@
 
 # dependencies
 google-maps-react/node_modules/*    
-!google-maps-react/node_modules/.*/.*  
+ 
 
 /node_modules
 /.pnp
