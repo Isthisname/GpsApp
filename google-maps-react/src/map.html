@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Google Maps API Test</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhJ6Mz2-NBrPZeuXtlaROqHrT2hN0aKVg&callback=initMap" async defer></script>
+    <style>
+        /* CSS styles for the map container */
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simple Google Maps API Test</h1>
+    <div id="map"></div>
+
+    <script>
+        // Initialize and display the map
+        function initMap() {
+            // Center the map on a specific location
+            var myLatLng = { lat: 40.7128, lng: -74.006 };
+
+            // Create a new map object
+            var map = new google.maps.Map(document.getElementById("map"), {
+                center: myLatLng,
+                zoom: 8 // Adjust the zoom level as needed
+            });
+
+            // Add a marker to the map
+            var marker = new google.maps.Marker({
+                position: myLatLng,
+                map: map,
+                title: "Hello World!" // Optional title for the marker
+            });
+        }
+    </script>
+</body>
+</html>
