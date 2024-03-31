@@ -44,6 +44,19 @@ const locationSchema = new mongoose.Schema({
     longitude: Number,
     createdAt: { type: Date, default: Date.now }
 });
+// Task Schema
+const taskSchema = new mongoose.Schema({
+    title: String,
+    description: String,
+    assigned: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], // Assuming assignment to users by ID
+    notes: [String],
+    location: {
+        latitude: Number,
+        longitude: Number
+    },
+    status: String, // Consider using enum if there are specific status values
+    createdAt: { type: Date, default: Date.now }
+});
 
 // Group Schema
 const groupSchema = new mongoose.Schema({
@@ -51,6 +64,7 @@ const groupSchema = new mongoose.Schema({
     creator: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     guests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     locations: [locationSchema],
+    tasks: [taskSchema],
     createdAt: { type: Date, default: Date.now }
 });
 const Group = mongoose.model('Group', groupSchema);
@@ -76,6 +90,39 @@ function authenticateToken(req, res, next) {
         return res.status(401).json({ success: false, message: 'Authorization token is required' });
     }
 }
+// Add Group Task Endpoint (Protected)
+app.post('/addGroupTask', authenticateToken, async (req, res) => {
+    try {
+        const { name, title, description, assigned, notes, location, status } = req.body;
+
+        // Check for all required fields (requirements)
+        if (!name || !title || !description || !assigned || !location || !status) {
+            return res.status(400).json({ success: false, message: 'Missing required fields' });
+        }
+
+        // Find the group by name
+        const group = await Group.findOne({ name }).exec();
+        if (!group) {
+            return res.status(404).json({ success: false, message: 'Group not found' });
+        }
+
+        // Verify if the authenticated user is the creator or part of the guests
+        if (!group.creator.equals(req.user.id) && !group.guests.some(guest => guest.equals(req.user.id))) {
+            return res.status(403).json({ success: false, message: 'User not authorized to add tasks to this group' });
+        }
+
+        // Add the new task to the group's tasks array
+        group.tasks.push({ title, description, assigned, notes, location, status });
+
+        // Save the updated group
+        await group.save();
+
+        res.json({ success: true, message: 'Task added successfully', group });
+    } catch (error) {
+        console.error('Error adding group task:', error);
+        res.status(500).json({ success: false, message: 'Error adding group task' });
+    }
+});
 
 // Signup Endpoint
 app.post('/signup', async (req, res) => {
