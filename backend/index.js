@@ -9,7 +9,7 @@ const crypto = require('crypto');
 const saltRounds = 10;
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3300;
 
 
 // Generate a random secret key for JWT
