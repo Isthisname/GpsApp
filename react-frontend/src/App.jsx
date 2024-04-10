@@ -6,34 +6,49 @@ import {
   Navigate,
 } from "react-router-dom";
 import WelcomePage from "./components/WelcomePage";
-import HomePage from "./components/HomePage";
+import HomePage from "./pages/HomePage/HomePage";
 import LoginPage from "./components/auth/LoginPage";
 import SignupPage from "./components/auth/SignupPage";
-import * as auth from "./utils/auth";
+import { isAuthenticated } from "./utils/auth"; // Import isAuthenticated function
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(isAuthenticated());
 
   useEffect(() => {
-    console.log("Checking authentication status...");
-    const token = auth.getToken();
-    console.log("Token found:", token);
-    if (token) {
-      setIsLoggedIn(true);
-      console.log("User is logged in.");
-    } else {
-      setIsLoggedIn(false);
-      console.log("User is not logged in.");
-    }
+    const checkAuthStatus = () => {
+      setIsLoggedIn(isAuthenticated()); // Update isLoggedIn state
+    };
+    checkAuthStatus();
   }, []);
+  const handleLogin = () => {
+    setIsLoggedIn(true); // Set isLoggedIn to true after successful login
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false); // Set isLoggedIn to false after logout
+  };
 
   return (
     <Router>
       <Routes>
         <Route path="/welcome" element={<WelcomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/" element={isLoggedIn ? <HomePage /> : <WelcomePage />} />
+
+        <Route
+          path="/signup"
+          element={isLoggedIn ? <Navigate to="/" /> : <SignupPage />}
+        />
+
+        <Route
+          path="/login"
+          element={<LoginPage setIsLoggedIn={setIsLoggedIn} />}
+        />
+
+        <Route
+          path="/"
+          element={
+            isLoggedIn ? <HomePage onLogout={handleLogout} /> : <WelcomePage />
+          }
+        />
       </Routes>
     </Router>
   );

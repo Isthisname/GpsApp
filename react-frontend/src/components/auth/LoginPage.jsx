@@ -4,7 +4,7 @@ import { Form, Button, Container } from "react-bootstrap";
 import { login } from "../../utils/api"; // Import the login function from api.js
 import * as auth from "../../utils/auth"; // Import all from auth.js for token management
 
-const LoginPage = () => {
+const LoginPage = ({ setIsLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate(); // Initialize navigate function
@@ -12,10 +12,12 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log("enter log");
       const response = await login({ username, password }); // Use the login function from api.js
       if (response && response.token) {
         // Ensure response exists and contains token
         auth.saveToken(response.token); // Save the token using functions from auth.js
+        setIsLoggedIn(true);
         navigate("/"); // Navigate to the homepage upon successful login
       } else {
         // Handle case where login is successful but no token is returned
