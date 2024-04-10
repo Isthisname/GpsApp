@@ -17,16 +17,6 @@ const HomePage = () => {
           </ul>
         </Col>
       </Row>
-      <Row className="mt-3">
-        <Col>
-          <Link to="/login">
-            <Button variant="primary">Login</Button>
-          </Link>
-          <Link to="/signup" className="ml-2">
-            <Button variant="secondary">Signup</Button>
-          </Link>
-        </Col>
-      </Row>
     </Container>
   );
 };

@@ -13,8 +13,9 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const response = await login({ username, password }); // Use the login function from api.js
-      if (response.data.token) {
-        auth.saveToken(response.data.token); // Save the token using functions from auth.js
+      if (response && response.token) {
+        // Ensure response exists and contains token
+        auth.saveToken(response.token); // Save the token using functions from auth.js
         navigate("/"); // Navigate to the homepage upon successful login
       } else {
         // Handle case where login is successful but no token is returned
