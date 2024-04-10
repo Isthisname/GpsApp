@@ -18,15 +18,7 @@ const CustomSidebar = () => {
       </button>
       <Sidebar width={sidebarWidth}>
         <Menu menuItemStyles={{ button: styles.menuItem }}>
-          <MenuItem>
-            <Link to="/documentation">Documentation</Link>
-          </MenuItem>
-          <MenuItem>
-            <Link to="/calendar">Calendar</Link>
-          </MenuItem>
-          <MenuItem>
-            <Link to="/e-commerce">E-commerce</Link>
-          </MenuItem>
+
         </Menu>
       </Sidebar>
     </div>

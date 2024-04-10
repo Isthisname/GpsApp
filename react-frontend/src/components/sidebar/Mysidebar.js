@@ -1,32 +1,65 @@
-import React, { useState } from 'react';
-import { Button, Navbar, Nav, Container, Col, Row } from 'react-bootstrap';
+import React from "react";
+import {
+  Sidebar,
+  Menu,
+  MenuItem,
+  useProSidebar,
+  SubMenu,
+  ProSidebarProvider,
+} from "react-pro-sidebar";
+import { Link } from "react-router-dom";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
+import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
+import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
+import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 
-const Sidebar = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const toggleSidebar = () => setIsOpen(!isOpen);
+const App = () => {
+  const { collapseSidebar } = useProSidebar();
 
-    return (
-        <Container fluid>
-            <Row>
-                <Col xs={2} id="sidebar-wrapper" className={`collapse ${isOpen ? 'show' : ''}`}>
-                    <Nav className="flex-column">
-                        <Nav.Link href="#action1">Home</Nav.Link>
-                        <Nav.Link href="#action2">About</Nav.Link>
-                        {/* Add more links as needed */}
-                    </Nav>
-                </Col>
-                <Col xs={10} id="page-content-wrapper">
-                    <Navbar className="mb-3" bg="light" expand="lg">
-                        <Button variant="primary" onClick={toggleSidebar}>
-                            {isOpen ? 'Hide' : 'Show'} Sidebar
-                        </Button>
-                    </Navbar>
-                    <h2>Welcome to the Dashboard</h2>
-                    {/* Main content goes here */}
-                </Col>
-            </Row>
-        </Container>
-    );
+  return (
+    <div style={{ display: "flex", height: "100vh" }}>
+      <Sidebar className="app">
+        <Menu>
+          <MenuItem
+            component={<Link to="/" className="link" />}
+            className="menu1"
+            icon={
+              <MenuOutlinedIcon
+                onClick={() => {
+                  collapseSidebar();
+                }}
+              />
+            }
+          >
+            <h2>QUICKPAY</h2>
+          </MenuItem>
+          <SubMenu label="Navigation">
+            <MenuItem component={<Link to="/teams" className="link" />}>
+              <HomeOutlinedIcon /> Teams
+            </MenuItem>
+            <MenuItem component={<Link to="/people" className="link" />}>
+              <PeopleOutlinedIcon /> People
+            </MenuItem>
+            <MenuItem component={<Link to="/create-task" className="link" />}>
+              <ContactsOutlinedIcon /> Create Task
+            </MenuItem>
+          </SubMenu>
+          <MenuItem component={<Link to="/profile" className="link" />}>
+            <ReceiptOutlinedIcon /> Profile
+          </MenuItem>
+          <MenuItem component={<Link to="/faq" className="link" />}>
+            <HelpOutlineOutlinedIcon /> FAQ
+          </MenuItem>
+          <MenuItem component={<Link to="/calendar" className="link" />}>
+            <CalendarTodayOutlinedIcon /> Calendar
+          </MenuItem>
+        </Menu>
+      </Sidebar>
+    </div>
+  );
 };
 
-export default Sidebar;
+export default App;
