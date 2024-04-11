@@ -1,21 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import CustomSidebar from "../../components/sidebar/customsidebar";
 import ReactDOM from "react-dom";
-import Sidebar from "../../components/sidebar/Sidebar";
+
+
+import { Sidebar, Menu, MenuItem, SubMenu, menuClasses } from 'react-pro-sidebar';
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 
 const HomePage = () => {
+  const [collapsed, setCollapsed] = useState(false);
+
+  const toggleCollapsed = () => {
+    setCollapsed(!collapsed);
+  };
   return (
-    <Container fluid>
-      <Sidebar></Sidebar>
-      <Row>
-        <Col xs={3} md={2} lg={2}></Col>
-        <Col>
-          <h1>Welcome to Your App</h1>
-          <p>This is your homepage where you can...</p>
-        </Col>
-      </Row>
-    </Container>
+    <div >
+      <h2>Welcome Page</h2>
+    </div>
+
   );
 };
 

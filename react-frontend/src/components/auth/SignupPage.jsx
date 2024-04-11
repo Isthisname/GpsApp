@@ -31,6 +31,7 @@ const SignupPage = () => {
   };
 
   return (
+    
     <Container className="mt-5">
       <h2>Sign Up</h2>
       {error && <Alert variant="danger">{error}</Alert>}
