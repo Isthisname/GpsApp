@@ -10,6 +10,7 @@ import LoginPage from "./components/auth/LoginPage";
 import SignupPage from "./components/auth/SignupPage";
 import WelcomePage from "./components/WelcomePage";
 
+
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
