@@ -15,16 +15,25 @@ const API_URL = 'http://localhost:3300';
 // Retrieve token from local storage or any other storage mechanism
 export const getToken = () => localStorage.getItem('token');
 
-// Login function
+
 export const login = async (credentials) => {
   try {
     const response = await axios.post(`${API_URL}/signin`, credentials);
     return response.data;
   } catch (error) {
-    // Handle error appropriately
+   
     throw error;
   }
 };
+
+export const signup = async (userData) => {
+    try {
+      const response = await axios.post(`${API_URL}/signup`, userData);
+      return response.data; 
+    } catch (error) {
+      throw error.response.data; 
+    }
+  };
 
 // A generic secured request function for making authenticated API calls
 export const securedRequest = async ({ method, url, data }) => {

@@ -1,21 +1,23 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { isAuthenticated } from "../utils/auth";
 
 const WelcomePage = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      navigate("/");
+    }
+  }, []);
+
   return (
     <div>
-      <h1>Welcome to Our Application!</h1>
-      <p>
-        We're excited to have you on board. Please sign in or sign up to get
-        started.
-      </p>
+      <h1>Welcome to Our App!</h1>
+      <p>Please sign in or sign up to access the application.</p>
       <div>
-        <Link to="/login">
-          <button>Login</button>
-        </Link>
-        <Link to="/signup">
-          <button>Signup</button>
-        </Link>
+        <Link to="/login">Login</Link> {/* Link to the login page */}
+        <Link to="/signup">Sign Up</Link> {/* Link to the signup page */}
       </div>
     </div>
   );
