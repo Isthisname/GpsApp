@@ -12,7 +12,7 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import Groups3Icon from '@mui/icons-material/Groups3';
 import RecentActorsIcon from '@mui/icons-material/RecentActors';
 
-const MySidebar2 = () => {
+const MySidebar = () => {
 
 
   const [collapsed, setCollapsed] = useState(false);
@@ -23,27 +23,27 @@ const MySidebar2 = () => {
     setCollapsed(!collapsed);
   };
   return (
-  
+
     <Sidebar collapsed={collapsed}>
 
-     <Menu iconShape="square" >
-        <MenuItem  icon={<MenuOutlinedIcon />} onClick={toggleCollapsed}/>
-      
+      <Menu iconShape="square" >
+        <MenuItem icon={<MenuOutlinedIcon />} onClick={toggleCollapsed} />
+
         <SubMenu label="Task" icon={<TaskIcon />}>
           <MenuItem icon={<AddIcon />} component={<Link to="/add-task" className="link" />}>Add Task</MenuItem>
-          <MenuItem icon={<ListAltIcon/>} component={<Link to="/list-task" className="link" />}>List Task</MenuItem>
-          <MenuItem icon={<IosShareIcon/>}>Asign Task</MenuItem>
+          <MenuItem icon={<ListAltIcon />} component={<Link to="/list-task" className="link" />}>Assigned to me</MenuItem>
+          <MenuItem icon={<IosShareIcon />}>Asign Task</MenuItem>
         </SubMenu>
         <SubMenu label="Groups" icon={<Groups3Icon />}>
-          <MenuItem icon={<GroupAddIcon/>} component={<Link to="/add-groups" className="link" />}>Add Group</MenuItem>
-          <MenuItem icon={<RecentActorsIcon/>} component={<Link to="/list-groups" className="link" />}>List Groups</MenuItem>
-        </SubMenu>      
+          <MenuItem icon={<GroupAddIcon />} component={<Link to="/add-groups" className="link" />}>Create Group</MenuItem>
+          <MenuItem icon={<RecentActorsIcon />} component={<Link to="/list-groups" className="link" />}>My Groups</MenuItem>
+        </SubMenu>
         <MenuItem component={<Link to="/map" className="link" />}>
-              <ContactsOutlinedIcon /> Map
-            </MenuItem>
-        </Menu>
-    </Sidebar>  
+          <ContactsOutlinedIcon /> Map
+        </MenuItem>
+      </Menu>
+    </Sidebar>
   )
 };
 
-export default MySidebar2;
+export default MySidebar;
