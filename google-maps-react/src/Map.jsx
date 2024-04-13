@@ -32,6 +32,11 @@ const Map = () => {
     setSelectedMarker(markerId);
   };
 
+  const addMarkerFromDatabase = (latitude, longitude) => {
+    // Add a new marker at the provided latitude and longitude
+    setMarkers([...markers, { id: markers.length, lat: latitude, lng: longitude, icon: bearIcon }]);
+  };
+
   return (
     <div style={{ display: 'flex', height: '100vh' }}>
       {/* Sidebar or menu */}
@@ -44,10 +49,10 @@ const Map = () => {
         </div>
       </div>
       {/* Map */}
-      <div style={{ width: '80%' }}>
+      <div style={{ width: '80%', height: '100vh' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
-          defaultCenter={userPosition || { lat: 0, lng: 0 }}
+          defaultCenter={userPosition}
           center={userPosition}
           defaultZoom={15}
           onClick={handleMapClick}

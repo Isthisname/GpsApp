@@ -126,23 +126,6 @@ function initMap(): void {
   }
 }
 
-function placeMarkerAtLocation(latitude: number, longitude: number): void {
-  if (map) {
-    const location = {
-      lat: latitude,
-      lng: longitude,
-    };
-
-    const marker = new google.maps.Marker({
-      position: location,
-      map: map,
-      title: "Custom Location",
-    });
-  } else {
-    console.error("Map is not initialized.");
-  }
-}
-
 function checkGeofence(userLocation: google.maps.LatLngLiteral): void {
   if (geofence) {
     const isInside = google.maps.geometry.poly.containsLocation(new google.maps.LatLng(userLocation.lat, userLocation.lng), geofence);
