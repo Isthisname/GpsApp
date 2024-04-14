@@ -1,5 +1,6 @@
 import groupModel from "../models/group.model.js";
 
+
 export const createGroup = async (req, res) => {
     const groupRequest = req.body;
 
@@ -11,15 +12,14 @@ export const createGroup = async (req, res) => {
         return res.status(400).json({ error_message: 'groupRequest is required' });
     }
 
-
     const gropup = new groupModel({
         name: groupRequest.name,
         owner_id: groupRequest.owner_id,
         description:groupRequest.description
 
     })
-    await gropup.save()
-    return res.status(200).json({ title: groupRequest.name, description: groupRequest.description });
+   const createdGroup =  await gropup.save()
+    return res.status(200).json({ id:createdGroup._id, title: createdGroup.name, description: createdGroup.description });
 
 };
 

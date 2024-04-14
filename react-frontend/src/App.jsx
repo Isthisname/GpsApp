@@ -20,7 +20,7 @@ import Header from "./components/Header/Header";
 import AddTask from "./pages/task/AddTask";
 import ListTask from "./pages/task/ListTask";
 import ListGroups from "./pages/groups/ListGroups";
-import AddGroup from "./pages/groups/AddGroups";
+import CreateGroup from "./pages/groups/GroupManager";
 import * as auth from "./utils/auth";
 
 
@@ -61,7 +61,7 @@ const App = () => {
           <Route path="/add-task" element={isLoggedIn ? <AddTask/> : <WelcomePage />}/>
           <Route path="/list-task" element={isLoggedIn ? <ListTask/> : <WelcomePage />}/>
           <Route path="/list-groups" element={isLoggedIn ? <ListGroups/> : <WelcomePage />}/>
-          <Route path="/add-groups" element={isLoggedIn ? <AddGroup/> : <WelcomePage />}/>
+          <Route path="/add-groups" element={isLoggedIn ? <CreateGroup/> : <WelcomePage />}/>
           <Route path="/map" element={isLoggedIn?<MapPage/>: <WelcomePage />} />
         </Routes>
       </div>
