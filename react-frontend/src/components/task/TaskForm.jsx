@@ -5,6 +5,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
+import MapComponent from '../../components/maps/MapComponent'
+
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -28,7 +30,7 @@ const top100Films = [
 
 const TaskForm = ({ onSubmit, initialTask, isEditing }) => {
 
-
+    const [selectedItems, setSelectedItems] = useState([]);
     const [value, setValue] = React.useState('1');
 
     const handleChange = (event, newValue) => {
@@ -192,15 +194,21 @@ const TaskForm = ({ onSubmit, initialTask, isEditing }) => {
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <Autocomplete
-                            disablePortal
-                            size='small'
-                            id="combo-box-demo"
-                            options={top100Films}
-                            renderInput={(params) => <TextField {...params} label="Assigned to" />}
-                            onChange={handleInputChange}
-                            value={task.target_id}
-                        />
+                    <FormControl fullWidth
+                            size='small' variant="outlined">
+                            <InputLabel>Assigned to</InputLabel>
+                            <Select
+                                label="Assigned"
+                                name="target_id"
+                                value={task.target_id}
+                                onChange={handleInputChange}
+                                
+                            >
+                                <MenuItem value="todo">To Do</MenuItem>
+                                <MenuItem value="in_progress">In Progress</MenuItem>
+                                <MenuItem value="done">Done</MenuItem>
+                            </Select>
+                        </FormControl>
                     </Grid>
 
                     <Grid item xs={12}>
@@ -227,12 +235,14 @@ const TaskForm = ({ onSubmit, initialTask, isEditing }) => {
                     </Grid>
                 </Grid>
         </form>
+        <MapComponent data={selectedItems} />
             </Container>
 
         </TabPanel>
         <TabPanel value="2">Item Two</TabPanel>
         <TabPanel value="3">Item Three</TabPanel>
       </TabContext>
+      
     
            
     );

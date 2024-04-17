@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import TaskForm from '../../components/task/TaskForm';
-import MapComponent from '../../components/maps/MapComponent';
+
 
 const AddTask = () => {
 
-  const [selectedItems, setSelectedItems] = useState([]);
+ 
 // Estado para controlar si estamos en modo de edición o creación
 const [isEditing, setIsEditing] = useState(false);
 
@@ -28,7 +28,7 @@ return (
       {isEditing ? 'Cancelar Edición' : 'Editar Tarea Existente'}
     </button>
 
-    <MapComponent data={selectedItems} />
+    
   </div>
 );
 };

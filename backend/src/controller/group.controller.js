@@ -45,11 +45,6 @@ export const deleteGroup = async (req, res) => {
 
     const groupId = req.params.group_id
 
-
-    console.log(groupId);
-
-
-
     try {
         const group = await groupModel.findById(groupId);
         if (!group) {
@@ -66,6 +61,36 @@ export const deleteGroup = async (req, res) => {
 }
 
 
+export const updateGroup = async (req, res) => {
 
+    const groupId = req.params.group_id
+    const groupRequest = req.body;
+
+
+    const group = await groupModel.findById(groupId);
+    if (!group) {
+        return res.status(404).json({ message: 'group not found' });
+    }
+
+    
+    await   groupModel.findByIdAndUpdate(groupId, groupRequest, { new: true })
+    .then(updatedGroup => {
+        if (updatedGroup) {
+            console.log('Usuario actualizado:', updatedGroup);
+            return res.status(200).json({ id: updatedGroup._id, name: updatedGroup.name, description: updatedGroup.description });
+        } else {
+            console.log('No se encontró el usuario con el ID proporcionado');
+            return res.status(400).json({ message: 'update fail' });
+        }
+    })
+    .catch(error => {
+        console.error('Error al actualizar el usuario:', error);
+        return res.status(500).json({ message: 'Internal Server Error' });
+    });
+
+
+
+   
+};
 
 
