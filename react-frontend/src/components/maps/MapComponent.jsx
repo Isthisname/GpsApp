@@ -17,8 +17,8 @@ const MapComponent = ({ data }) => {
       }}>
       <APIProvider apiKey={'AIzaSyBhJ6Mz2-NBrPZeuXtlaROqHrT2hN0aKVg'}>
         <Map
-          defaultZoom={3}
-          defaultCenter={{ lat: 22.54992, lng: 0 }}
+          defaultZoom={10}
+          defaultCenter={{ lat:40.5486807849397, lng:-111.9137212403442 }}
           gestureHandling={'greedy'}
           style={{ width: '100%', height: '100%' }} 
         >
