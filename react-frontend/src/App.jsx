@@ -14,14 +14,17 @@ import { isAuthenticated } from "./utils/auth"; // Import isAuthenticated functi
 import { Sidebar, Menu, MenuItem, SubMenu, menuClasses } from 'react-pro-sidebar';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapPage from "./pages/map/MapPage";
-import MySidebar from "./components/sidebar/MySidebar";
+import MySidebar from "./components/SidebarApp";
 
-import Header from "./components/Header/Header";
+import Header from "./components/Header";
 import AddTask from "./pages/task/AddTask";
 import ListTask from "./pages/task/ListTask";
-import ListGroups from "./pages/groups/ListGroups";
 import CreateGroup from "./pages/groups/GroupManager";
+import ManagementGroupPage from './pages/groups/ ManagementGroupPage'
 import * as auth from "./utils/auth";
+import { Container, Grid } from "@mui/material";
+import SidebarApp from "./components/SidebarApp";
+import TaskForm from "./components/task/TaskForm";
 
 
 const App = () => {
@@ -44,28 +47,33 @@ const App = () => {
   };
 
   const handleProfileClick = () => {
-  
+
   };
 
   return (
-    
+    <Container maxWidth="xl" sx={{padding: '1px 1px !important', marginTop:'65px'}}>
     <Router>
-     {isLoggedIn? <Header user={"user Test"} onProfileClick={handleProfileClick} onLogoutClick={handleLogout}/>:<div></div>}
-      <div style={{ display: 'flex' }}>
-      {isLoggedIn? <MySidebar/>:<div></div>}
-        <Routes>
-          <Route path="/signup" element={isLoggedIn ? <Navigate to="/" /> : <SignupPage />}/>
-          <Route path="/" element={isLoggedIn ? <HomePage onLogout={handleLogout} /> : <WelcomePage />}/>
-          <Route path="/login" element={<LoginPage setIsLoggedIn={setIsLoggedIn} />}/>
-          <Route path="/welcome" element={isLoggedIn?<WelcomePage />:<LoginPage/>} />
-          <Route path="/add-task" element={isLoggedIn ? <AddTask/> : <WelcomePage />}/>
-          <Route path="/list-task" element={isLoggedIn ? <ListTask/> : <WelcomePage />}/>
-          <Route path="/list-groups" element={isLoggedIn ? <ListGroups/> : <WelcomePage />}/>
-          <Route path="/add-groups" element={isLoggedIn ? <CreateGroup/> : <WelcomePage />}/>
-          <Route path="/map" element={isLoggedIn?<MapPage/>: <WelcomePage />} />
-        </Routes>
-      </div>
+      <Grid container spacing={0}  >
+        {isLoggedIn ? <Header /> : null}
+        <Grid item xs={2}>
+        {isLoggedIn ? <SidebarApp/>:null}
+        </Grid>
+        <Grid item xs={10}>
+          <Routes>
+            <Route path="/signup" element={isLoggedIn ? <Navigate to="/" /> : <SignupPage />} />
+            <Route path="/" element={isLoggedIn ? <HomePage onLogout={handleLogout} /> : <WelcomePage />} />
+            <Route path="/login" element={<LoginPage setIsLoggedIn={setIsLoggedIn} />} />
+            <Route path="/welcome" element={isLoggedIn ? <WelcomePage /> : <LoginPage />} />
+            <Route path="/add-task" element={isLoggedIn ? <AddTask /> : <WelcomePage />} />
+            <Route path="/list-task" element={isLoggedIn ? <ListTask /> : <WelcomePage />} />
+            <Route path="/groups" element={isLoggedIn ? <ManagementGroupPage /> : <WelcomePage />} />
+            <Route path="/map" element={isLoggedIn ? <TaskForm /> : <WelcomePage />} />
+            <Route path="/test" element={isLoggedIn ? <ManagementGroupPage /> : <WelcomePage />} />
+          </Routes>
+        </Grid>
+      </Grid>
     </Router>
+  </Container>
   );
 };
 
