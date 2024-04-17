@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Button, TextField } from '@mui/material';
-import { createGroup, listGroupsByUser } from '../../api/groupService'
+import { createGroup, listGroupsByUser, deleteGroup} from '../../api/groupService'
 
 
 const columns = [
@@ -25,6 +25,8 @@ const ManagementGroupPage = () => {
   const handleDelete = () => {
     if (selectedRow) {
       const updatedGroups = group.filter(Group => Group.id !== selectedRow.id);
+
+deleteGroup(selectedRow.id);
       setGroups(updatedGroups);
       setSelectedRow(null);
       setFormData({ name: '', description: '' });

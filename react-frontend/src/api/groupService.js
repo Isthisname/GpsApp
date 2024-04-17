@@ -45,3 +45,26 @@ export const listGroupsByUser = async () => {
     throw error;
   }
 };
+
+
+
+export const deleteGroup = async (data) => {
+  const requestUrl = `${API_URL}/group/${data}`;
+  axios.delete(requestUrl)
+  .then(response => {
+    console.log('La operación DELETE fue exitosa.');
+    console.log('Respuesta:', response.data);
+  })
+  .catch(error => {
+    // Si hay un error en la petición, muestra el mensaje de error
+    if (error.response) {
+      console.log(`Error: ${error.response.data.message}`);
+    } else if (error.request) {
+      console.log('Error: No se pudo conectar al servidor.');
+    } else {
+      console.log(`Error: ${error.message}`);
+    }
+    console.error('Error:', error);
+  });
+  
+};

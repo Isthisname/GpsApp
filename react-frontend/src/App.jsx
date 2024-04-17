@@ -7,8 +7,8 @@ import {
 } from "react-router-dom";
 import WelcomePage from "./components/WelcomePage";
 import HomePage from "./pages/HomePage/HomePage";
-import LoginPage from "./components/auth/LoginPage";
-import SignupPage from "./components/auth/SignupPage";
+import LoginPage from "./pages/auth/LoginPage";
+import SignupPage from "./pages/auth/SignupPage";
 import { isAuthenticated } from "./utils/auth"; // Import isAuthenticated function
 
 import { Sidebar, Menu, MenuItem, SubMenu, menuClasses } from 'react-pro-sidebar';
@@ -62,7 +62,8 @@ const App = () => {
           <Routes>
             <Route path="/signup" element={isLoggedIn ? <Navigate to="/" /> : <SignupPage />} />
             <Route path="/" element={isLoggedIn ? <HomePage onLogout={handleLogout} /> : <WelcomePage />} />
-            <Route path="/login" element={<LoginPage setIsLoggedIn={setIsLoggedIn} />} />
+            
+            <Route path="/login"element={isLoggedIn ? <HomePage onLogout={handleLogout} /> : <LoginPage />}  />
             <Route path="/welcome" element={isLoggedIn ? <WelcomePage /> : <LoginPage />} />
             <Route path="/add-task" element={isLoggedIn ? <AddTask /> : <WelcomePage />} />
             <Route path="/list-task" element={isLoggedIn ? <ListTask /> : <WelcomePage />} />

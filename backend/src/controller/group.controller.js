@@ -15,33 +15,57 @@ export const createGroup = async (req, res) => {
     const gropup = new groupModel({
         name: groupRequest.name,
         owner_id: groupRequest.owner_id,
-        description:groupRequest.description
+        description: groupRequest.description
 
     })
-   const createdGroup =  await gropup.save()
-    return res.status(200).json({ id:createdGroup._id, title: createdGroup.name, description: createdGroup.description });
+    const createdGroup = await gropup.save()
+    return res.status(200).json({ id: createdGroup._id, title: createdGroup.name, description: createdGroup.description });
 
 };
 
 export const findGroupByOwner = async (req, res) => {
-    
+
     const ownerId = req.params.owner_id
 
     groupModel.find({ owner_id: ownerId })
-    .then(tasks => {
-        console.log(tasks);
-        return res.status(200).json(tasks)
-    })
-    .catch(error => {
-        console.error(error);
-        res.send("error")
-    });
+        .then(tasks => {
+            console.log(tasks);
+            return res.status(200).json(tasks)
+        })
+        .catch(error => {
+            console.error(error);
+            res.send("error")
+        });
 
-    
-    
-    
 
 };
+
+
+export const deleteGroup = async (req, res) => {
+
+    const groupId = req.params.group_id
+
+
+    console.log(groupId);
+
+
+
+    try {
+        const group = await groupModel.findById(groupId);
+        if (!group) {
+            return res.status(404).json({ message: 'group not found' });
+        }
+        await groupModel.findByIdAndDelete(groupId)
+        res.status(200).json({ message: 'group deleted' });
+
+    } catch (error) {
+        console.error('Error al eliminar el usuario:', error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+
+}
+
+
 
 
 
