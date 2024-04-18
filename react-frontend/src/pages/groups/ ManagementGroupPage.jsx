@@ -5,6 +5,7 @@ import { createGroup, listGroupsByUser, deleteGroup} from '../../api/groupServic
 
 
 const columns = [
+  { field: 'id', headerName: 'id', flex: 1 },
   { field: 'name', headerName: 'name', flex: 1 },
   { field: 'description', headerName: 'description', flex: 1 },
   { field: 'date_created', headerName: 'date create', flex: 1 },

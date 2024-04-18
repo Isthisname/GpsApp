@@ -3,12 +3,14 @@ import { APIProvider, Map, Marker, InfoWindow } from '@vis.gl/react-google-maps'
 import { Box } from '@mui/material';
 
 
-const MapComponent = ({ data }) => {
+const MapHandlerSelect = ({}) => {
 
   const [infowindowOpen, setInfowindowOpen] = useState(false);
 
-  console.log(data)
-  const pos = { lat: 10, lng: -4 };
+  const [pos, setPos] = useState({});
+
+
+  //const pos = { lat: 10, lng: -4 };
 
   return (
      <Box  sx={{
@@ -17,7 +19,7 @@ const MapComponent = ({ data }) => {
       }}>
       <APIProvider apiKey={'AIzaSyBhJ6Mz2-NBrPZeuXtlaROqHrT2hN0aKVg'}>
         <Map
-          defaultZoom={8}
+          defaultZoom={10}
           defaultCenter={{ lat:40.5486807849397, lng:-111.9137212403442 }}
           gestureHandling={'greedy'}
           style={{ width: '100%', height: '100%' }} 
@@ -27,7 +29,6 @@ const MapComponent = ({ data }) => {
             <Marker
               position={location}
               clickable={true}
-              onClick={() => setInfowindowOpen(true)}
               title={'clickable google.maps.Marker'}
             />
           ))}
@@ -41,6 +42,6 @@ const MapComponent = ({ data }) => {
   );
 }
 
-export default MapComponent;
+export default MapHandlerSelect;
 
 

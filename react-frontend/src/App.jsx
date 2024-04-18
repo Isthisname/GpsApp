@@ -25,7 +25,7 @@ import * as auth from "./utils/auth";
 import { Container, Grid } from "@mui/material";
 import SidebarApp from "./components/SidebarApp";
 import TaskForm from "./components/task/TaskForm";
-
+import MapComponent from "./components/maps/MapComponent";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(isAuthenticated());
@@ -68,7 +68,7 @@ const App = () => {
             <Route path="/add-task" element={isLoggedIn ? <AddTask /> : <WelcomePage />} />
             <Route path="/list-task" element={isLoggedIn ? <ListTask /> : <WelcomePage />} />
             <Route path="/groups" element={isLoggedIn ? <ManagementGroupPage /> : <WelcomePage />} />
-            <Route path="/map" element={isLoggedIn ? <TaskForm /> : <WelcomePage />} />
+            <Route path="/map" element={isLoggedIn ? <MapComponent data={[{ lat:40.5486807849397, lng:-111.9137212403442 }]} /> : <WelcomePage />} />
             <Route path="/test" element={isLoggedIn ? <ManagementGroupPage /> : <WelcomePage />} />
           </Routes>
         </Grid>

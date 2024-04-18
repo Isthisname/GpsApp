@@ -58,11 +58,6 @@ const SidebarApp = () => {
         <MenuItem component={<Link to="/map" className="link" />}>
           <ContactsOutlinedIcon /> Map
         </MenuItem>
-
-
-        <MenuItem component={<Link to="/test" className="link" />}>
-          Ref
-        </MenuItem>
       </Menu>
     </Sidebar>
 
