@@ -4,7 +4,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 
-const Header = ({ }) => {
+const Header = ({ onLogout}) => {
   return (
     <AppBar sx={{ backgroundColor: '#1b5e20' }}>
       <Toolbar>
@@ -15,7 +15,7 @@ const Header = ({ }) => {
           <AccountCircleIcon />
           Raul Reyes
         </IconButton>
-        <IconButton color="inherit" onClick={() => { }}>
+        <IconButton color="inherit" onClick={() => {onLogout()  }}>
           <LogoutIcon />
         </IconButton>
       </Toolbar>

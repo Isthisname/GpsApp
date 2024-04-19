@@ -27,8 +27,10 @@ import SidebarApp from "./components/SidebarApp";
 import TaskForm from "./components/task/TaskForm";
 import MapComponent from "./components/maps/MapComponent";
 
+
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(isAuthenticated());
+
 
   useEffect(() => {
     const checkAuthStatus = () => {
@@ -44,6 +46,7 @@ const App = () => {
   const handleLogout = () => {
     setIsLoggedIn(false); // Set isLoggedIn to false after logout
     auth.removeToken();
+    
   };
 
   const handleProfileClick = () => {
@@ -54,17 +57,17 @@ const App = () => {
     <Container maxWidth="xl" sx={{padding: '1px 1px !important', marginTop:'65px'}}>
     <Router>
       <Grid container spacing={0}  >
-        {isLoggedIn ? <Header /> : null}
+        {isLoggedIn ? <Header onLogout={handleLogout}/> : null}
         <Grid item xs={2}>
         {isLoggedIn ? <SidebarApp/>:null}
         </Grid>
         <Grid item xs={10}>
           <Routes>
             <Route path="/signup" element={isLoggedIn ? <Navigate to="/" /> : <SignupPage />} />
-            <Route path="/" element={isLoggedIn ? <HomePage onLogout={handleLogout} /> : <WelcomePage />} />
             
-            <Route path="/login"element={isLoggedIn ? <HomePage onLogout={handleLogout} /> : <LoginPage />}  />
-            <Route path="/welcome" element={isLoggedIn ? <WelcomePage /> : <LoginPage />} />
+            
+            <Route path="/"element={isLoggedIn ? <HomePage/> :  <WelcomePage />}  />
+            <Route path="/login" element={!isLoggedIn ? <LoginPage setIsLoggedIn={handleLogin}/>:<HomePage/> } />
             <Route path="/add-task" element={isLoggedIn ? <AddTask /> : <WelcomePage />} />
             <Route path="/list-task" element={isLoggedIn ? <ListTask /> : <WelcomePage />} />
             <Route path="/groups" element={isLoggedIn ? <ManagementGroupPage /> : <WelcomePage />} />

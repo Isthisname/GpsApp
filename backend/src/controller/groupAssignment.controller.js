@@ -25,14 +25,19 @@ export const User2group = async (req, res) => {
 
 
 
-export const findAssignmentByGroup = async (req, res) => {
+export const findUsersByGroup = async (req, res) => {
 
     const group_id = req.params.group_id
 
-    const aaa = await assignmentModel.find({ group_id: group_id },{user_name:1})
+    await assignmentModel.find({ group_id: group_id }, { _id: 0, group_id: 1 })
         .populate('user_id', { username: 1 })
         .then(assignment => {
-            return res.status(200).json(assignment)
+            const response = assignment.map((item, index) => ({
+                user_id: item.user_id._id,
+                name: item.user_id.username
+            })
+            )
+            return res.status(200).json(response)
         })
         .catch(error => {
             console.error(error);

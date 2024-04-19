@@ -14,6 +14,7 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 
 import { listGroupsByUser } from '../../api/groupService.js'
+import MapHandlerSelect from '../maps/MapHandlerSelect.jsx';
 
 
 const top100Films = [
@@ -75,6 +76,11 @@ const TaskForm = ({ onSubmit, initialTask, isEditing }) => {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setTask({ ...task, [name]: value });
+    };
+
+    const handleMark = (e) => {
+      console.log("from mark"+ e.latitude+" "+e.longitude)
+      
     };
 
     const handleSubmit = (e) => {
@@ -261,12 +267,11 @@ const TaskForm = ({ onSubmit, initialTask, isEditing }) => {
                             </Grid>
                         </Grid>
                     </form>
-                    <MapComponent data={selectedItems} />
+                    <MapHandlerSelect onClick={handleMark} />
                 </Container>
 
             </TabPanel>
             <TabPanel value="2">  
-           
             </TabPanel>
         </TabContext>
 
