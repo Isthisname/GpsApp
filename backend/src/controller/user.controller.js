@@ -22,3 +22,21 @@ export const updateUserStatus = async (req, res) => {
         res.status(500).send({ message: "Error updating user status", error: error });
     }
 };
+
+export const findAllUsers = async (req, res) => {
+    
+    
+
+    try {
+        const allUsers = await User.find({},{_id:1,username:1}) 
+
+        if (!allUsers) {
+            return res.status(404).send({ message: "Users not found" });
+        }
+
+        res.status(200).json(allUsers);
+    } catch (error) {
+        res.status(500).send({ message: "Error retreiving all users", error: error });
+    }
+};
+
