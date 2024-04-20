@@ -2,7 +2,7 @@
 
 # Node modules for both frontend and backend
 node_modules/
-
+GenerateSecret.js
 # Environment files
 .env
 

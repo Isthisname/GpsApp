@@ -2,15 +2,18 @@ import userModel from "../models/user.model.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
+import dotenv from "dotenv";
+dotenv.config()
+const jwtSecret = process.env.JWT_SECRET;
 
 
-const generateRandomSecret = () => {
-    return crypto.randomBytes(32).toString('hex');
-};
+
+
 
 const saltRounds = 10;
 
 export const signin = async (req, res) =>{
+    
         try {
             const { username, password } = req.body;
             const user = await userModel.findOne({ username });
@@ -21,7 +24,7 @@ export const signin = async (req, res) =>{
             if (!isMatch) {
                 return res.status(401).json({ success: false, message: 'Incorrect password' });
             }
-            const token = jwt.sign({ id: user._id, username: user.username }, generateRandomSecret(), { expiresIn: '1h' });
+            const token = jwt.sign({ id: user._id, username: user.username },jwtSecret, { expiresIn: '1h' });
             res.json({ success: true, token });
         } catch (error) {
             console.error('Error authenticating user:', error);
