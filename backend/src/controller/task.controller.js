@@ -48,6 +48,9 @@ export const findTaskByOwner = async (req, res) => {
     const ownerId = req.params.owner_id
 
     taskModel.find({ owner_id: ownerId })
+    .populate('target_id', { username: 1 })
+    .populate('owner_id', { username: 1 })
+    .populate('group_id', { name: 1 })
         .then(tasks => {
             console.log(tasks); // Los documentos que coinciden con el criterio de búsqueda
 
