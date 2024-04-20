@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Button } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
-const GroupList = ({ groups, handleEditClick, handleDeleteClick }) => {
+const AsignUserToGroup = ({ groups, handleEditClick, handleDeleteClick }) => {
   const columns=[
     { field: 'id', headerName: 'ID', width: 100 },
     { field: 'name', headerName: 'Name', width: 200 },
@@ -40,4 +40,4 @@ const GroupList = ({ groups, handleEditClick, handleDeleteClick }) => {
   );
 };
 
-export default GroupList;
+export default AsignUserToGroup;

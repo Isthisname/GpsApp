@@ -14,7 +14,12 @@ export const listTaskByUser = async () => {
       id:item._id,
       title: item.title,
       description: item.description,
-      location:item.location
+      location:item.location,
+        group_id: item.group_id,
+        owner_id: item.owner_id,
+        target_id: item.target_id,
+        status: item.status,
+        createdAt: item.createdAt
     }));
 
     return modifiedData;
@@ -23,3 +28,5 @@ export const listTaskByUser = async () => {
     throw error;
   }
 };
+
+

@@ -68,3 +68,25 @@ export const deleteGroup = async (data) => {
   });
   
 };
+
+
+
+export const listUsersByGroup = async (group_id) => {
+
+  try {     
+    const requestUrl = `${API_URL}/assignment/group/${group_id}`;
+
+    const response = await axios.get(requestUrl);
+    const data=  response.data;
+    
+    const modifiedData =data.map(item => ({
+      id:item.user_id,
+      name: item.name
+    }));
+
+    return modifiedData;
+
+  } catch (error) {
+    throw error;
+  }
+};

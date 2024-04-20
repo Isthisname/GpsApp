@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, Button, Container, Grid, Select, MenuItem, FormControl, InputLabel, Autocomplete } from '@mui/material';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-
-import MapComponent from '../../components/maps/MapComponent'
 
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
@@ -13,35 +7,26 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 
-import { listGroupsByUser } from '../../api/groupService.js'
+import { listGroupsByUser, listUsersByGroup } from '../../api/groupService.js'
 import MapHandlerSelect from '../maps/MapHandlerSelect.jsx';
-
-
-const top100Films = [
-    { label: 'The Shawshank Redemption', year: 1994 },
-    { label: 'The Godfather', year: 1972 },
-    { label: 'The Godfather: Part II', year: 1974 },
-    { label: 'The Dark Knight', year: 2008 },
-    { label: '12 Angry Men', year: 1957 },
-    { label: "Schindler's List", year: 1993 },
-    { label: 'Pulp Fiction', year: 1994 },
-    {
-        label: 'The Lord of the Rings: The Return of the King',
-        year: 2003,
-    }]
+import AssignedTask from './AssignedTask.jsx';
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
 
 
 const TaskForm = ({ onSubmit, initialTask, isEditing }) => {
 
-    const [selectedItems, setSelectedItems] = useState([]);
     const [value, setValue] = React.useState('1');
 
     const handleChange = (event, newValue) => {
+        console.log(newValue)
         setValue(newValue);
     };
 
     const [groups, setGroups] = useState([]);
     const [users, setUsers] = useState([]);
+    const [tabValue, setTabValue] = useState('1');
+
 
     useEffect(() => {
         onGroupCreated();
@@ -50,15 +35,6 @@ const TaskForm = ({ onSubmit, initialTask, isEditing }) => {
     const onGroupCreated = async () => {
         setGroups(await listGroupsByUser());
     };
-
-    useEffect(() => {
-        const fetchedUsers = [
-            { id: '1', name: 'User 1' },
-            { id: '2', name: 'User 2' },
-            { id: '3', name: 'User 3' }
-        ];
-        setUsers(fetchedUsers);
-    }, []);
 
     const [task, setTask] = useState(initialTask || {
         title: '',
@@ -73,20 +49,28 @@ const TaskForm = ({ onSubmit, initialTask, isEditing }) => {
         notes: ''
     });
 
-    const handleInputChange = (e) => {
+    const handleInputChange = async (e) => {
         const { name, value } = e.target;
+
+        if (e.target.name === "group_id") {
+            task.target_id = ''
+            setUsers(await listUsersByGroup(e.target.value))
+
+        }
         setTask({ ...task, [name]: value });
     };
 
     const handleMark = (e) => {
-      console.log("from mark"+ e.latitude+" "+e.longitude)
-      
+        console.log("from mark" + e.latitude + " " + e.longitude)
+        task.location = { latitude: e.latitude, longitude: e.longitude }
+        setTask(task)
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit(task);
     };
+
 
     useEffect(() => {
         if (initialTask) {
@@ -103,10 +87,20 @@ const TaskForm = ({ onSubmit, initialTask, isEditing }) => {
                 </TabList>
             </Box>
             <TabPanel value="1">
+                
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
+
+                <Fab color="primary" aria-label="add" onClick={e => { setValue('2') }}>
+                    <AddIcon />
+                </Fab>
+                </Box>
+                <AssignedTask handleEditClick={(e)=>{console.log(e)}} handleDeleteClick={(e)=>{}}  />
+            </TabPanel>
+            <TabPanel value="2">
 
                 <Container maxWidth="xl" >
-                    <form onSubmit={handleSubmit} autoComplete="off">
 
+                    <form onSubmit={handleSubmit} autoComplete="off">
 
                         <Grid container spacing={1}>
                             <Grid item xs={12} sm={6}>
@@ -140,7 +134,7 @@ const TaskForm = ({ onSubmit, initialTask, isEditing }) => {
 
                             <Grid item xs={12} sm={2}>
 
-                            <FormControl fullWidth
+                                <FormControl fullWidth
                                     size='small' variant="outlined">
                                     <InputLabel>Type</InputLabel>
                                     <Select
@@ -151,7 +145,7 @@ const TaskForm = ({ onSubmit, initialTask, isEditing }) => {
                                     >
                                         <MenuItem value="1">Type 1</MenuItem>
                                         <MenuItem value="2">Type 2</MenuItem>
-                                        <MenuItem value="3">Type 3</MenuItem>                                        
+                                        <MenuItem value="3">Type 3</MenuItem>
                                     </Select>
                                 </FormControl>
                             </Grid>
@@ -270,8 +264,6 @@ const TaskForm = ({ onSubmit, initialTask, isEditing }) => {
                     <MapHandlerSelect onClick={handleMark} />
                 </Container>
 
-            </TabPanel>
-            <TabPanel value="2">  
             </TabPanel>
         </TabContext>
 
