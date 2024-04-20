@@ -1,4 +1,5 @@
 import taskModel from "../models/task.model.js";
+import Task from "../models/task.model.js";
 
 export const createTask = async (req, res) => {
     const requestTask = req.body;
@@ -42,7 +43,6 @@ export const createTask = async (req, res) => {
 };
 
 
-
 export const findTaskByOwner = async (req, res) => {
 
     const ownerId = req.params.owner_id
@@ -60,9 +60,67 @@ export const findTaskByOwner = async (req, res) => {
             console.error(error); // Manejo de errores si la consulta falla
             res.send("error")
         });
-
-
 };
 
 
+export const deleteTask = async (req, res) => {
+    try {
+      const taskId = req.params.task_id; // Extract task ID from the request parameters
+  
+      // Find the task by ID and delete it
+      const deletedTask = await Task.findByIdAndDelete(taskId);
+  
+      if (!deletedTask) {
+        return res.status(404).json({ message: "Task not found" });
+      }
+  
+      res.status(200).json({ message: "Task deleted successfully", deletedTask });
+    } catch (error) {
+      console.error("Error deleting task:", error);
+      res.status(500).json({ message: "Error deleting task", error });
+    }
+  };
 
+  export const findTasksByTargetId = async (req, res) => {
+    const targetId = req.params.target_id;
+
+    try {
+        const tasks = await taskModel.find({ target_id: targetId });
+        res.status(200).json(tasks);
+    } catch (error) {
+        console.error("Error retrieving tasks:", error);
+        res.status(500).json({ message: "Error retrieving tasks" });
+    }
+}; 
+
+export const findTasksByGroup = async (req, res) => {
+    try {
+        const groupId = req.params.group_id;
+        const tasks = await Task.find({ group_id: groupId }).populate('owner_id', 'username');
+        res.status(200).json(tasks);
+    } catch (error) {
+        console.error('Error finding tasks by group:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
+export const updateTask = async (req, res) => {
+    try {
+        const taskId = req.params.task_id;
+        const updateData = req.body; // New data to update the task
+
+        // Find the task by task_id and update it
+        const updatedTask = await Task.findByIdAndUpdate(taskId, updateData, { new: true });
+
+        // Check if the task was found and updated
+        if (!updatedTask) {
+            return res.status(404).json({ message: 'Task not found' });
+        }
+
+        // Task updated successfully
+        res.status(200).json(updatedTask);
+    } catch (error) {
+        console.error('Error updating task:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};

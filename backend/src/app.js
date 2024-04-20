@@ -2,7 +2,7 @@ import express from 'express'
 import authRoutes from './routes/auth.routes.js'
 import taskRoutes from './routes/task.routes.js'
 import groupRoutes from './routes/group.routes.js'
-import groupAssignmentRoutes from './routes/groupAssigment.routes.js'
+import groupAssignmentRoutes from './routes/groupAssignment.routes.js'
 import userRoutes from './routes/user.routes.js'
 import cors from 'cors';
 
