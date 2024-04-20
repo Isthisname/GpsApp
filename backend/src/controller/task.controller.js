@@ -82,30 +82,14 @@ export const deleteTask = async (req, res) => {
   };
 
   export const findTasksByTargetId = async (req, res) => {
-    const targetId = req.params.target_id;
-    const userId = req.user.id;  // Extracted user ID from the token
+    const targetId = req.user.id;  // Extracted user ID from the token
 
     try {
-        // Find tasks where target_id is the provided id
-        const tasks = await Task.find({ target_id: targetId });
-        
-        if (tasks.length === 0) {
-            return res.status(404).json({ message: "No tasks found for the specified target" });
-        }
-
-        // Filter tasks to include only those where the current user is either the target or the owner
-        const accessibleTasks = tasks.filter(task => 
-            task.target_id.toString() === userId || task.owner_id.toString() === userId
-        );
-
-        if (accessibleTasks.length === 0) {
-            return res.status(403).json({ message: "Unauthorized: You do not have permission to view these tasks" });
-        }
-
-        res.status(200).json(accessibleTasks);
+        const tasks = await taskModel.find({ target_id: targetId });
+        res.status(200).json(tasks);
     } catch (error) {
-        console.error('Error retrieving tasks:', error);
-        res.status(500).json({ message: "Internal Server Error" });
+        console.error('Error retrieving tasks for user:', error);
+        res.status(500).json({ message: "Internal Server Error", error });
     }
 };
 
