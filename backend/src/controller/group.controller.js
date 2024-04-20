@@ -2,44 +2,45 @@ import groupModel from "../models/group.model.js";
 
 
 export const createGroup = async (req, res) => {
-    const groupRequest = req.body;
+    const { name, description } = req.body;
+    const userId = req.user.id;  // Extracted user ID from the token
 
-    if (!groupRequest.name) {
-        return res.status(400).json({ error_message: 'name is required' });
+    // Create a new group object with the owner_id set to the authenticated user's ID
+    const group = new groupModel({
+        name: name,
+        description: description,
+        owner_id: userId
+    });
+
+    try {
+        const savedGroup = await group.save();
+        res.status(201).json(savedGroup);
+    } catch (error) {
+        console.error('Error creating group:', error);
+        res.status(500).json({ message: "Internal Server Error", error });
     }
-
-    if (!groupRequest.owner_id) {
-        return res.status(400).json({ error_message: 'groupRequest is required' });
-    }
-
-    const gropup = new groupModel({
-        name: groupRequest.name,
-        owner_id: groupRequest.owner_id,
-        description: groupRequest.description
-
-    })
-    const createdGroup = await gropup.save()
-    return res.status(200).json({ id: createdGroup._id, title: createdGroup.name, description: createdGroup.description });
-
 };
 
 export const findGroupByOwner = async (req, res) => {
+    
+    const ownerId = req.user.id;  // Extracted user ID from the token
 
-    const ownerId = req.params.owner_id
+    try {
+        
 
-    groupModel.find({ owner_id: ownerId })
-        .then(tasks => {
-            console.log(tasks);
-            return res.status(200).json(tasks)
-        })
-        .catch(error => {
-            console.error(error);
-            res.send("error")
-        });
+        // Find groups where owner_id is the user provided in the token
+        const groups = await groupModel.find({ owner_id: ownerId });
+        
+        if (!groups || groups.length === 0) {
+            return res.status(404).json({ message: "No groups found for the specified owner" });
+        }
 
-
+        res.status(200).json(groups);
+    } catch (error) {
+        console.error('Error retrieving groups:', error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
 };
-
 
 export const deleteGroup = async (req, res) => {
 
