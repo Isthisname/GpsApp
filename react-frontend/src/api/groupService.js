@@ -1,19 +1,18 @@
 import axios from 'axios';
+import {getToken} from '../utils/auth'
 
 const API_URL = 'http://localhost:3300';
 
-//TODO que sea el usuario de la sesion
-const owner_id = "65e3d6eeea2337302af9f4f8";
-
 
 export const createGroup = async (data) => {
+
+  const config = {headers: {'Authorization': `Bearer ${getToken()}`}};
   try {
     const requestUrl = `${API_URL}/group`;
     const response = await axios.post(requestUrl, {
       name: data.name,
-      owner_id: owner_id,
       description: data.description
-    });
+    }, config);
 
     if (!response.data) {
       throw new Error('La respuesta no contiene datos');
@@ -28,9 +27,12 @@ export const createGroup = async (data) => {
 
 
 export const listGroupsByUser = async () => {
+
+  const config = {headers: {'Authorization': `Bearer ${getToken()}`}};
+
   try {     
-    const requestUrl = `${API_URL}/group/${owner_id}`;
-    const response = await axios.get(requestUrl);
+    const requestUrl = `${API_URL}/group`;
+    const response = (await axios.get(requestUrl, config));
     const data=  response.data;
     const modifiedData =data.map(item => ({
       id:item._id,
