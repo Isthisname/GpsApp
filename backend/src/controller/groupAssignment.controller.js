@@ -1,25 +1,21 @@
 import assignmentModel from '../models/groupAssignment.model.js'
 
 export const User2group = async (req, res) => {
-    const Request = req.body;
+    const { group_id, user_ids } = req.body;  // Expect user_ids to be an array of user IDs
 
-    if (!Request.user_id) {
-        return res.status(400).json({ error_message: 'user_id is required' });
+    try {
+        const assignments = user_ids.map(user_id => ({
+            group_id,
+            user_id
+        }));
+
+        const createdAssignments = await assignmentModel.insertMany(assignments);
+
+        res.status(201).json(createdAssignments);
+    } catch (error) {
+        console.error('Failed to assign users to group:', error);
+        res.status(500).json({ message: "Internal Server Error", error });
     }
-    if (!Request.group_id) {
-        return res.status(400).json({ error_message: 'group_id is required' });
-    }
-
-    const groupAssigment = new assignmentModel({
-
-        group_id: Request.group_id,
-        user_id: Request.user_id,
-
-
-    })
-    const createdGroup = await groupAssigment.save()
-    return res.status(200).json({ id: createdGroup._id });
-
 };
 
 

@@ -11,6 +11,7 @@ const userSchema = new Schema({
         longitude: { type: Number, default: null }
     },
     status: { type: String, enum: ['online', 'offline'], default: 'offline' }
+    
 });
 
 const User = mongoose.model('User', userSchema);
