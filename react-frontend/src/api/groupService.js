@@ -92,3 +92,25 @@ export const listUsersByGroup = async (group_id) => {
     throw error;
   }
 };
+
+
+
+
+export const addUsersToGroup = async (data) => {
+
+  const config = {headers: {'Authorization': `Bearer ${getToken()}`}};
+  try {
+    const requestUrl = `${API_URL}/assignment/group`;
+    const response = await axios.post(requestUrl, data, config);
+
+    if (!response.data) {
+      throw new Error('La respuesta no contiene datos');
+    }
+    const createdGroup = response.data
+    return createdGroup;
+  } catch (error) {
+    throw error;
+  }
+};
+
+

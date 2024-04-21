@@ -143,7 +143,7 @@ const ManagementGroupPage = () => {
         </div>
       </TabPanel>
       <TabPanel value="2">
-        <AsignUserToGroup  groups={group}></AsignUserToGroup>
+        <AsignUserToGroup  groups={group}/>
        
       </TabPanel>
     </TabContext>

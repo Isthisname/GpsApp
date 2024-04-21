@@ -6,14 +6,15 @@ import Stack from '@mui/material/Stack';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteOutlineTwoToneIcon from '@mui/icons-material/DeleteOutlineTwoTone';
 
-import { listTaskByUser } from '../../api/taskService.js'
+import { listTaskByUser, deleteTaskById } from '../../api/taskService.js'
+import ConfirmationDialog from '../../components/alertDialog.jsx'
 
 
-
-
-const AssignedTask = ({ handleEditClick, handleDeleteClick }) => {
-  const [name, setName] = useState('');
+const AssignedTask = ({ handleEditClick }) => {
+  const [selectedTask, setSelectedTask] = useState({});
   const [tasks, setTasks] = useState([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const handleCloseDialog = () => {setDialogOpen(false)};
 
 
   useEffect(() => {
@@ -21,12 +22,20 @@ const AssignedTask = ({ handleEditClick, handleDeleteClick }) => {
   }, []);
 
   const queryTaskList = async () => {
-
     const listTask = await listTaskByUser();
-    console.log(listTask);
     setTasks(listTask);
   };
 
+
+  const handleDeleteClick = async () => {
+    if (selectedTask.id !== null && selectedTask.id !== '') {
+      await deleteTaskById(selectedTask.id);
+      queryTaskList();
+      setDialogOpen(false);
+    } else {
+      alert('not is posible to delete the row!')
+    }
+  }
 
   const columns = [
     { field: 'title', headerName: 'Title', flex: 1 },
@@ -44,7 +53,10 @@ const AssignedTask = ({ handleEditClick, handleDeleteClick }) => {
             <Button variant="contained" color="primary" onClick={() => handleEditClick(params.row)}>
               <EditTwoToneIcon />
             </Button>
-            <Button variant="contained" color="secondary" onClick={() => handleDeleteClick(params.row.id)}>
+            <Button variant="contained" color="secondary" onClick={() => {
+              setSelectedTask(params.row)
+              setDialogOpen(true)
+            }}>
               <DeleteOutlineTwoToneIcon />
             </Button>
           </Stack>
@@ -54,9 +66,18 @@ const AssignedTask = ({ handleEditClick, handleDeleteClick }) => {
     },
   ];
 
-
   return (
     <Box>
+      <div>
+      
+        <ConfirmationDialog
+          open={dialogOpen}
+          onClose={handleCloseDialog}
+          onConfirm={handleDeleteClick}
+          title="Confirm Action"
+          message="¿are you sure that you want to delete this task?"
+        />
+      </div>
       <DataGrid
         rows={tasks}
         columns={columns}

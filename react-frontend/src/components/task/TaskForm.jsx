@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Container, Grid, Select, MenuItem, FormControl, InputLabel, Autocomplete } from '@mui/material';
+import { TextField, Button, Container, Grid, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
@@ -17,20 +17,13 @@ import AddIcon from '@mui/icons-material/Add';
 const TaskForm = ({ onSubmit, initialTask, isEditing }) => {
 
     const [value, setValue] = React.useState('1');
+    const [groups, setGroups] = useState([]);
+    const [users, setUsers] = useState([]);
 
     const handleChange = (event, newValue) => {
         console.log(newValue)
         setValue(newValue);
     };
-
-    const [groups, setGroups] = useState([]);
-    const [users, setUsers] = useState([]);
-    const [tabValue, setTabValue] = useState('1');
-
-
-    useEffect(() => {
-        onGroupCreated();
-    }, []);
 
     const onGroupCreated = async () => {
         setGroups(await listGroupsByUser());
@@ -51,11 +44,9 @@ const TaskForm = ({ onSubmit, initialTask, isEditing }) => {
 
     const handleInputChange = async (e) => {
         const { name, value } = e.target;
-
         if (e.target.name === "group_id") {
             task.target_id = ''
             setUsers(await listUsersByGroup(e.target.value))
-
         }
         setTask({ ...task, [name]: value });
     };
@@ -78,6 +69,10 @@ const TaskForm = ({ onSubmit, initialTask, isEditing }) => {
         }
     }, [initialTask]);
 
+    useEffect(() => {
+        onGroupCreated();
+    }, []);
+
     return (
         <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -87,14 +82,13 @@ const TaskForm = ({ onSubmit, initialTask, isEditing }) => {
                 </TabList>
             </Box>
             <TabPanel value="1">
-                
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
 
-                <Fab color="primary" aria-label="add" onClick={e => { setValue('2') }}>
-                    <AddIcon />
-                </Fab>
+                    <Fab color="primary" aria-label="add" onClick={e => { setValue('2') }}>
+                        <AddIcon />
+                    </Fab>
                 </Box>
-                <AssignedTask handleEditClick={(e)=>{console.log(e)}} handleDeleteClick={(e)=>{}}  />
+                <AssignedTask handleEditClick={(e) => { console.log(e) }} />
             </TabPanel>
             <TabPanel value="2">
 
