@@ -33,17 +33,26 @@ export const listGroupsByUser = async () => {
   try {     
     const requestUrl = `${API_URL}/group`;
     const response = (await axios.get(requestUrl, config));
+
     const data=  response.data;
+    
+    
     const modifiedData =data.map(item => ({
       id:item._id,
       name: item.name,
       description: item.description,
       date_created:item.createdAt
     }));
-
+    
     return modifiedData;
-
+    
   } catch (error) {
+    
+    
+    if (error.response.status=== 404) {
+    
+      return [];
+    }
     throw error;
   }
 };

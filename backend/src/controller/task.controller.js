@@ -2,8 +2,12 @@ import taskModel from "../models/task.model.js";
 import Task from "../models/task.model.js";
 
 export const createTask = async (req, res) => {
-    const requestTask = req.body;
 
+    const userId = req.user.id;  // Extracted user ID from the token
+    const requestTask = req.body;
+    requestTask.owner_id = userId;
+
+    
     if (!requestTask.title) {
         return res.status(400).json({ error_message: 'title is required' });
     }
@@ -20,19 +24,22 @@ export const createTask = async (req, res) => {
         return res.status(400).json({ error_message: 'location is required' });
     }
 
+
+    const targer_id = !requestTask.target_id || requestTask.target_id===''?null:requestTask.target_id;
+
     const taskStatus = !requestTask.status ? "ASSIGNED": null;
 
     const task = new taskModel({
         title: requestTask.title,
         priority: requestTask.priority,
         type: requestTask.type,
-        owner_id: requestTask.owner_id,
+        owner_id: userId,
         status:taskStatus,
         location: requestTask.location,
         description: requestTask.description,
         due_date: requestTask.due_date,
         group_id: requestTask.group_id,
-        target_id: requestTask.target_id,
+        target_id: targer_id,
         status: requestTask.status,
         notes: requestTask.notes,
 
@@ -45,7 +52,8 @@ export const createTask = async (req, res) => {
 
 export const findTaskByOwner = async (req, res) => {
 
-    const ownerId = req.params.owner_id
+
+    const ownerId = req.user.id;
 
     taskModel.find({ owner_id: ownerId })
     .populate('target_id', { username: 1 })
@@ -53,7 +61,6 @@ export const findTaskByOwner = async (req, res) => {
     .populate('group_id', { name: 1 })
         .then(tasks => {
             console.log(tasks); // Los documentos que coinciden con el criterio de búsqueda
-
             res.json(tasks)
         })
         .catch(error => {

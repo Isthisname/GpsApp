@@ -3,8 +3,8 @@ import {createTask, findTaskByOwner, deleteTask, findTasksByTargetId,findTasksBy
 import { authenticateToken } from "../middleware/auth.middleware.js";
 const router = Router()
 
-router.post("/task", createTask);
-router.get("/task/:owner_id", findTaskByOwner);
+router.post("/task", authenticateToken, createTask);
+router.get("/task",authenticateToken, findTaskByOwner);
 router.delete("/task/:task_id", deleteTask);
 router.get("/mytasks", authenticateToken,findTasksByTargetId);
 router.get("/tasks/group/:group_id", findTasksByGroup);

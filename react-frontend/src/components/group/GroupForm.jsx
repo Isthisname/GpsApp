@@ -27,7 +27,7 @@ const GroupForm = ({ onGroupCreated }) => {
 
    const createdGroup =  await createGroup(formData);
    alert('¡Grupo creado exitosamente!');
-    const list = await listGroupsByUser()
+    
 
     onGroupCreated();
    

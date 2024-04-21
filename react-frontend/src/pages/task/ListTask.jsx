@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {listTaskByUser} from '../../api/taskService'
+import {taskAssignedToMe} from '../../api/taskService'
 import DataGrid from '../../components/GridComponent';
 import { Box } from '@mui/material';
 
@@ -8,10 +8,10 @@ const ListTask = () => {
   const [myRows, setMyRows] = useState([]);
 
   useEffect(() => {
-    console.log("aaaaa")
+    
     const fetchProducts = async () => {
       try {
-        const productsData = await listTaskByUser();
+        const productsData = await taskAssignedToMe();
         setMyRows(productsData)
       } catch (error) {
         console.error('Error fetching products:', error);

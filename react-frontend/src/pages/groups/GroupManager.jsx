@@ -16,7 +16,9 @@ const GroupManager = () => {
 
 
   const onGroupCreated = async () => {
-    setGroups(await listGroupsByUser());
+const listGroup  = await listGroupsByUser();
+    console.log(listGroup)
+    setGroups(listGroup);
   };
 
 
