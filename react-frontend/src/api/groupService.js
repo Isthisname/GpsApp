@@ -123,3 +123,14 @@ export const addUsersToGroup = async (data) => {
 };
 
 
+export const removeUserFromGroup = async (groupId, userId) => {
+  try {
+    const response = await axios.delete(`${API_URL}/assignment/group${groupId}/${userId}`);
+    return response.data; // or handle the response as needed
+  } catch (error) {
+    console.error('Failed to delete user from group:', error);
+    throw error; // or handle the error as needed
+  }
+};
+
+

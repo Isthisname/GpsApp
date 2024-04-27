@@ -44,3 +44,17 @@ export const findUsersByGroup = async (req, res) => {
 };
 
 
+export const removeUserFromGroup = async (req, res) => {
+    const { group_id, user_id } = req.params;
+
+    try {
+        const result = await assignmentModel.findOneAndDelete({ group_id: group_id, user_id: user_id });
+        if (result) {
+            res.status(200).json({ message: "User removed from the group successfully" });
+        } else {
+            res.status(404).json({ message: "User not found in the specified group" });
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error", error });
+    }
+};
