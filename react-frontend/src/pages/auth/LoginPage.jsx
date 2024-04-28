@@ -17,7 +17,7 @@ const LoginPage = ({ setIsLoggedIn }) => {
       const response = await login({ username, password });
       if (response && response.token) {
         auth.saveToken(response.token);
-        setIsLoggedIn(true);
+        setIsLoggedIn(response.username);
         navigate("/");
       } else {
         setError("Invalid credentials. Please try again.");
@@ -44,7 +44,10 @@ const LoginPage = ({ setIsLoggedIn }) => {
       }}
     >
       <Container className="mt-5">
-        <div className="card" style={{ backgroundColor: "rgba(255, 255, 255, 0.7)" }}>
+        <div
+          className="card"
+          style={{ backgroundColor: "rgba(255, 255, 255, 0.7)" }}
+        >
           <div className="card-body">
             <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-5">Login</h3>
             <Form onSubmit={handleSubmit}>
@@ -69,7 +72,12 @@ const LoginPage = ({ setIsLoggedIn }) => {
                 />
               </Form.Group>
 
-              <Button variant="primary" type="submit" className="mb-4" size="lg">
+              <Button
+                variant="primary"
+                type="submit"
+                className="mb-4"
+                size="lg"
+              >
                 Submit
               </Button>
             </Form>

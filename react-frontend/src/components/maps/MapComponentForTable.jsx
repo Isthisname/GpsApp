@@ -1,21 +1,8 @@
-import React, { useState, useEffect } from 'react';
 import { APIProvider, Map } from '@vis.gl/react-google-maps';
 import { Box } from '@mui/material';
-import { listTaskByUser } from '../../api/taskService.js';
 import MarkerWrapper from './MarkerWrapper.jsx';
 
 const MapComponent = ({ data }) => {
-	const [tasks, setTasks] = useState([]);
-
-	useEffect(() => {
-		queryTaskList();
-	}, []);
-
-	const queryTaskList = async () => {
-		const listTask = await listTaskByUser();
-		setTasks(listTask);
-	};
-
 	return (
 		<Box
 			sx={{
@@ -30,7 +17,7 @@ const MapComponent = ({ data }) => {
 					gestureHandling={'greedy'}
 					style={{ width: '100%', height: '100%' }}
 				>
-					{tasks?.map(user => (
+					{data?.map(user => (
 						<MarkerWrapper user={user} key={user?.id} />
 					))}
 				</Map>

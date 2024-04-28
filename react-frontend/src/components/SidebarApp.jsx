@@ -20,8 +20,9 @@ const SidebarApp = () => {
     setCollapsed(!collapsed);
   };
   return (
-    <Sidebar collapsed={collapsed}>
+    <Sidebar collapsed={collapsed} style={{ position: "fixed", left: 0 }}>
       <Menu
+        style={{ width: collapsed ? "80px" : "250px" }} // Adjust the width here
         menuItemStyles={{
           button: ({ level, active, disabled }) => {
             // only apply styles on first level elements of the tree

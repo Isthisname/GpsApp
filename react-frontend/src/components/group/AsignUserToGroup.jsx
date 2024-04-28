@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
-import Box from "@mui/material/Box";
+
 import { DataGrid } from "@mui/x-data-grid";
+import { TextField, Button, Box, Icon, Grid, Stack } from "@mui/material";
 
 import Chip from "@mui/material/Chip";
 import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
+
 import { listUsersByGroup, addUsersToGroup } from "../../api/groupService";
 import { listAllUsers } from "../../api/userService";
 import AddIcon from "@mui/icons-material/Add";
 import Fab from "@mui/material/Fab";
+import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
+import DeleteOutlineTwoToneIcon from "@mui/icons-material/DeleteOutlineTwoTone";
+import { deleteUserFromGroup } from "../../api/groupService";
 
 export default function AsignUserToGroup({ groups }) {
   useEffect(() => {
@@ -34,7 +38,22 @@ export default function AsignUserToGroup({ groups }) {
     setUsers(await listUsersByGroup(groupId));
   };
 
-  const handleSave = () => {
+  const handleRemoveUser = async (userId) => {
+    if (!selectedGroup) {
+      alert("No group selected!");
+      return;
+    }
+    try {
+      await removeUserFromGroup(selectedGroup, userId);
+      setUsers(await listUsersByGroup(selectedGroup)); // Refresh the list after removal
+      alert("User removed successfully!");
+    } catch (error) {
+      alert("Failed to remove user");
+      console.error("Error removing user:", error);
+    }
+  };
+
+  const handleSave = async () => {
     if (!selectedGroup) {
       alert("you need to select a group!");
       return;
@@ -53,7 +72,38 @@ export default function AsignUserToGroup({ groups }) {
     };
 
     addUsersToGroup(request);
+    setSelectedGroup(selectedGroup);
+    setSelectedItems([]);
+    setUsers([]);
+    setUsers(await listUsersByGroup(selectedGroup));
   };
+  const userColumns = [
+    { field: "name", headerName: "Members", flex: 1 },
+    {
+      field: "actions",
+      headerName: "Acciones",
+      width: 200,
+      renderCell: (params) => (
+        <div>
+          <Stack direction="row" spacing={2}>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => {
+                handleRemoveUser(params.row);
+                console.log(params.row);
+                console.log("grouppp" + selectedGroup);
+                //setSelectedTask(params.row)
+                //setDialogOpen(true)
+              }}
+            >
+              <DeleteOutlineTwoToneIcon />
+            </Button>
+          </Stack>
+        </div>
+      ),
+    },
+  ];
 
   return (
     <Box sx={{ height: "75vh", width: "100%", display: "flex" }}>
@@ -114,7 +164,7 @@ export default function AsignUserToGroup({ groups }) {
         <DataGrid
           sx={{ flex: 0.1 }}
           rows={users}
-          columns={[{ field: "name", headerName: "Members", flex: 1 }]}
+          columns={userColumns}
           initialState={{
             pagination: {
               paginationModel: {

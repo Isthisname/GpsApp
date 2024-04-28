@@ -1,26 +1,39 @@
 import axios from 'axios';
-import {getToken} from '../utils/auth'
+import { getToken } from '../utils/auth';
 
 const API_URL = 'http://localhost:3300';
 
 export const listAllUsers = async () => {
+	const config = { headers: { Authorization: `Bearer ${getToken()}` } };
 
-    const config = {headers: {'Authorization': `Bearer ${getToken()}`}};
+	try {
+		const requestUrl = `${API_URL}/user`;
 
-    try {     
-      const requestUrl = `${API_URL}/user`;
-  
-      const response = await axios.get(requestUrl, config);
-      const data=  response.data;
-      
-      const allListUsers =data.map(item => ({
-        id:item._id,
-        name: item.username
-      }));
-  
-      return allListUsers;
-  
-    } catch (error) {
-      throw error;
-    }
-  };
+		const response = await axios.get(requestUrl, config);
+		const data = response.data;
+
+		const allListUsers = data.map(item => ({
+			id: item._id,
+			name: item.username,
+		}));
+
+		return allListUsers;
+	} catch (error) {
+		throw error;
+	}
+};
+
+export const updateUser = async payload => {
+	const config = { headers: { Authorization: `Bearer ${getToken()}` } };
+
+	try {
+		const requestUrl = `${API_URL}/user`;
+
+		const response = await axios.put(requestUrl, payload, config);
+		const data = response.data;
+
+		return data;
+	} catch (error) {
+		console.error(error);
+	}
+};
